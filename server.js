@@ -17,6 +17,11 @@ app.use(express.json());
 app.use("/api", authRoutes);
 
 
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
+
+
 
 
 // Connect DB and start server
