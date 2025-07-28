@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     unique: true, // لأنك ستستخدمه لتسجيل الدخول
     trim: true,
   },
-  phone: {
+  number: {
     type: String,
     required: true,
   },

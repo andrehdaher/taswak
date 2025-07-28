@@ -6,9 +6,9 @@ const User = require("../models/user");
 // POST /api/signup
 router.post("/singup", async (req, res) => {
   try {
-    const { fullName, phone, location, landmark } = req.body;
+    const { fullName, number, location, landmark } = req.body;
 
-    if (!fullName || !phone) {
+    if (!fullName || !number) {
       return res.status(400).json({ message: "يرجى تعبئة الاسم ورقم الهاتف" });
     }
 
@@ -19,7 +19,7 @@ router.post("/singup", async (req, res) => {
 
     const newUser = new User({
       fullName,
-      phone,
+      number,
       location,
       landmark,
     });
@@ -33,26 +33,21 @@ router.post("/singup", async (req, res) => {
   }
 });
 
-// ✅ تسجيل الدخول باستخدام الاسم الثلاثي فقط
+// ✅ تسجيل الدخول باستخدام الاسم الثلاثي والرقم
 router.post("/login", async (req, res) => {
+  const { fullName, number } = req.body;
   try {
-    const { fullName } = req.body;
-
-    if (!fullName || !fullName.trim()) {
-      return res.status(400).json({ message: "يرجى إدخال الاسم الثلاثي" });
-    }
-
-    const user = await User.findOne({ fullName: fullName.trim() });
+    // تحقق من وجود المستخدم في قاعدة البيانات
+    const user = await User.findOne({ fullName, number });
 
     if (!user) {
-      return res.status(404).json({ message: "هذا الاسم غير مسجل" });
+      return res.status(404).json({ message: "المستخدم غير موجود" });
     }
 
-    // نجاح
-    res.status(200).json({ message: "تم تسجيل الدخول بنجاح", user });
+    // تسجيل الدخول ناجح
+    res.status(200).json({ message: "تم تسجيل الدخول بنجاح" });
   } catch (err) {
-    console.error("Login error:", err.message);
-    res.status(500).json({ message: "خطأ في الخادم" });
+    res.status(500).json({ message: "خطأ في السيرفر" });
   }
 });
 
