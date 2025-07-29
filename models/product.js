@@ -29,6 +29,14 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+    favorite: {
+    type: Boolean,
+    default: false, // false تعني أنه ليس في المفضلة
+  },
+  inInvoice: {
+    type: Boolean,
+    default: false, // false تعني أنه ليس في الفاتورة
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
